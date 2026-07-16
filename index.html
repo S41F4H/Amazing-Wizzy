@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amazing Wizzy — Main Menu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sky-top:#0d1b2a;
+    --sky-mid:#1b2f4a;
+    --forest-dark:#0f2e22;
+    --forest-mid:#1b4332;
+    --forest-light:#2d6a4f;
+    --leaf-glow:#52b788;
+    --gold:#ffd60a;
+    --gold-dim:#b8860b;
+    --violet:#e0aaff;
+    --parchment:#f1faee;
+    --wood-dark:#3a2418;
+    --wood-mid:#5c3a21;
+    --wood-light:#7a4f2a;
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+
+  html,body{
+    width:100%; height:100%;
+    overflow:hidden;
+    font-family:'VT323', monospace;
+  }
+
+  body{
+    position:relative;
+    background:#0d1b2a;
+  }
+
+  /* ---------- BACKGROUND ARTWORK ---------- */
+  .bg-scene{
+    position:absolute; inset:0;
+    background-image:url('assets/images/bg-forest.png');
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+  }
+
+  /* soft dark vignette so UI stays readable over the artwork */
+  .bg-vignette{
+    position:absolute; inset:0;
+    background:
+      linear-gradient(180deg, rgba(13,27,42,.15) 0%, rgba(13,27,42,0) 30%, rgba(13,27,42,.35) 75%, rgba(13,27,42,.65) 100%);
+  }
+
+  /* firefly particles */
+  .firefly{
+    position:absolute;
+    width:4px; height:4px;
+    background:var(--gold);
+    box-shadow:0 0 6px 2px rgba(255,214,10,.8);
+    border-radius:50%;
+    animation:float-firefly 6s ease-in-out infinite;
+    opacity:0;
+  }
+  @keyframes float-firefly{
+    0%{ opacity:0; transform:translate(0,0); }
+    15%{ opacity:1; }
+    50%{ transform:translate(20px,-30px); }
+    85%{ opacity:1; }
+    100%{ opacity:0; transform:translate(-10px,-60px); }
+  }
+
+  /* ---------- MAIN CONTENT ---------- */
+  .stage{
+    position:relative;
+    width:100%; height:100%;
+    display:flex; flex-direction:column;
+    align-items:center;
+    justify-content:flex-start;
+    padding-top:6vh;
+  }
+
+  .logo-wrap{
+    position:relative;
+    text-align:center;
+    margin-bottom:2vh;
+    z-index:2;
+  }
+
+  .logo-img{
+    width:min(94vw, 520px);
+    height:auto;
+    filter: drop-shadow(0 0 22px rgba(255,214,10,.6)) drop-shadow(0 0 46px rgba(255,214,10,.3));
+    animation:glow-pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes glow-pulse{
+    0%,100%{ filter:drop-shadow(0 0 22px rgba(255,214,10,.6)) drop-shadow(0 0 46px rgba(255,214,10,.3)); }
+    50%{ filter:drop-shadow(0 0 34px rgba(255,214,10,.85)) drop-shadow(0 0 60px rgba(255,214,10,.45)); }
+  }
+
+  /* ---------- SPRITE-FRAME MENU BUTTONS ---------- */
+  .menu-panel{
+    position:relative;
+    z-index:2;
+    display:flex; flex-direction:column; gap:26px;
+    align-items:center;
+  }
+
+  .menu-btn-wrap{
+    position:relative;
+    width:min(58vw, 230px);
+    height:min(27vw, 108px);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+    user-select:none;
+  }
+
+  .btn-frame{
+    display:block;
+    max-width:100%;
+    max-height:100%;
+    width:auto;
+    height:auto;
+    object-fit:contain;
+    filter: drop-shadow(0 6px 8px rgba(0,0,0,.45));
+    transition: transform .12s cubic-bezier(.34,1.56,.64,1);
+    pointer-events:none;
+  }
+
+  .menu-btn-wrap.pressed .btn-frame{
+    transform: translateY(3px) scale(0.97);
+  }
+
+  .btn-label{
+    position:absolute;
+    left:50%; top:50%;
+    transform:translate(-50%,-50%);
+    font-family:'VT323', monospace;
+    font-size:19px;
+    color:#fff5d6;
+    text-shadow:2px 2px 0 rgba(0,0,0,.6);
+    letter-spacing:1px;
+    pointer-events:none;
+  }
+
+  .footer-credit{
+    position:absolute;
+    bottom:14px;
+    font-family:'VT323', monospace;
+    font-size:15px;
+    color:rgba(241,250,238,.55);
+    letter-spacing:1px;
+    z-index:2;
+  }
+
+  @media (max-width:480px){
+    .menu-btn-wrap{ width:64vw; height:30vw; }
+    .btn-label{ font-size:17px; }
+    .menu-panel{ gap:20px; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="bg-scene"></div>
+  <div class="bg-vignette"></div>
+
+  <div class="stage">
+    <div class="logo-wrap">
+      <img class="logo-img" src="assets/images/logo.png" alt="Amazing Wizzy">
+    </div>
+
+    <div class="menu-panel">
+      <div class="menu-btn-wrap" id="btn-start">
+        <img class="btn-frame" src="assets/images/btn/f1-idle.png" alt="">
+        <span class="btn-label">เริ่มเกม</span>
+      </div>
+      <div class="menu-btn-wrap" id="btn-settings">
+        <img class="btn-frame" src="assets/images/btn/f1-idle.png" alt="">
+        <span class="btn-label">การตั้งค่า</span>
+      </div>
+      <div class="menu-btn-wrap" id="btn-credits">
+        <img class="btn-frame" src="assets/images/btn/f1-idle.png" alt="">
+        <span class="btn-label">ผู้สร้าง</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-credit">Amazing Wizzy — v0.1 prototype</div>
+
+  <script>
+    // สร้างหิ่งห้อยแบบสุ่มตำแหน่งและจังหวะ
+    const stage = document.querySelector('.stage');
+    const fireflyCount = 18;
+    for(let i=0;i<fireflyCount;i++){
+      const f = document.createElement('div');
+      f.className = 'firefly';
+      f.style.left = Math.random()*100 + 'vw';
+      f.style.top = (45 + Math.random()*50) + 'vh';
+      f.style.animationDelay = (Math.random()*6) + 's';
+      f.style.animationDuration = (4 + Math.random()*4) + 's';
+      document.body.appendChild(f);
+    }
+
+    // ---------- ปุ่มเมนูแบบ Sprite Frame (ยุบเด้งจริงจากภาพ 6 เฟรม) ----------
+    const FRAMES = {
+      idle:       'assets/images/btn/f1-idle.png',
+      hover:      'assets/images/btn/f2-hover.png',
+      pressStart: 'assets/images/btn/f3-press-start.png',
+      pressFull:  'assets/images/btn/f4-press-full.png',
+      release:    'assets/images/btn/f5-release.png',
+      settle:     'assets/images/btn/f6-settle.png',
+    };
+    // preload ทุกเฟรมล่วงหน้า กันภาพกระตุกตอนสลับครั้งแรก
+    Object.values(FRAMES).forEach(src => { const im = new Image(); im.src = src; });
+
+    function initPixelButton(el, onActivate){
+      const img = el.querySelector('.btn-frame');
+      let pressed = false;
+      let hovering = false;
+      let timers = [];
+
+      function clearTimers(){ timers.forEach(clearTimeout); timers = []; }
+      function setFrame(key){ img.src = FRAMES[key]; }
+
+      function release(){
+        clearTimers();
+        el.classList.remove('pressed');
+        setFrame('release');
+        timers.push(setTimeout(() => setFrame('settle'), 70));
+        timers.push(setTimeout(() => setFrame(hovering ? 'hover' : 'idle'), 150));
+      }
+
+      el.addEventListener('pointerenter', () => {
+        hovering = true;
+        if (!pressed) setFrame('hover');
+      });
+      el.addEventListener('pointerleave', () => {
+        hovering = false;
+        if (pressed) { pressed = false; release(); }
+        else setFrame('idle');
+      });
+      el.addEventListener('pointerdown', (e) => {
+        pressed = true;
+        clearTimers();
+        el.classList.add('pressed');
+        setFrame('pressStart');
+        timers.push(setTimeout(() => setFrame('pressFull'), 60));
+      });
+      el.addEventListener('pointerup', () => {
+        if (!pressed) return;
+        pressed = false;
+        release();
+        if (onActivate) onActivate();
+      });
+    }
+
+    initPixelButton(document.getElementById('btn-start'), () => {
+      console.log('เริ่มเกม: ยังไม่ได้สร้างหน้าเกม');
+    });
+    initPixelButton(document.getElementById('btn-settings'), () => {
+      console.log('เปิดการตั้งค่า: ยังไม่ได้สร้างหน้านี้');
+    });
+    initPixelButton(document.getElementById('btn-credits'), () => {
+      console.log('เปิดหน้าผู้สร้าง: ยังไม่ได้สร้างหน้านี้');
+    });
+  </script>
+
+</body>
+</html>
